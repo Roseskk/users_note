@@ -3,27 +3,15 @@ import {useState} from "react";
 
 const Users = () => {
     const [users, setUsers] = useState(api.users.fetchAll())
-    console.log(users)
 
     // Не понял а с этим что сделать нужно было?
     const renderPhrase = (number) => {
 
     }
 
-    return(
-        <table className="table">
-            <thead>
-            <tr>
-                <th scope="col">Имя</th>
-                <th scope="col">Качества</th>
-                <th scope="col">Профессия</th>
-                <th scope="col">Встретился, раз</th>
-                <th scope="col">Оценка</th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
-            {
+    const renderData = () => {
+        if (users.length !== 0 ) {
+            return(
                 users.map((item, idx) => {
                     return(
                         <>
@@ -44,8 +32,25 @@ const Users = () => {
                         </>
                     )
                 })
-            }
-            </tbody>
+            )
+        } else  {
+            return <h1 className={'text-red'}>Empty data</h1>
+        }
+    }
+
+    return(
+        <table className="table">
+            <thead>
+            <tr>
+                <th scope="col">Имя</th>
+                <th scope="col">Качества</th>
+                <th scope="col">Профессия</th>
+                <th scope="col">Встретился, раз</th>
+                <th scope="col">Оценка</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>{renderData()}</tbody>
         </table>
     )
 }
