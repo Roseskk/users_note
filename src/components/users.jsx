@@ -27,6 +27,7 @@ const Users = () => {
                             <td>{item.profession.name}</td>
                             <td>{item.completedMeetings}</td>
                             <td>{item.rate}</td>
+                            <td></td>
                             <td><button onClick={() => setUsers(users.filter(value => value._id !== item._id))} className={'btn btn-danger'}>Удалить</button></td>
                         </tr>
                     </>
@@ -46,6 +47,7 @@ const Users = () => {
                     <th scope="col">Профессия</th>
                     <th scope="col">Встретился, раз</th>
                     <th scope="col">Оценка</th>
+                    <th scope="col">Избранное</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
