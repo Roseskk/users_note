@@ -24,9 +24,9 @@ const UsersList = () => {
 
     const renderData = () => {
         return(
-            users.map((item, idx) => {
+            users.map((item) => {
                 return(
-                    <User key={idx} item={item} onFilter={handleFilter} onFavourite={handleFavourite} />
+                    <User key={item._id} item={item} onFilter={handleFilter} onFavourite={handleFavourite} />
                 )
             })
         )

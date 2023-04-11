@@ -7,7 +7,7 @@ const User = ({item, onFilter, onFavourite}) => {
         <>
             <tr>
                 <td>{item.name}</td>
-                <td><Qualities qual={item} /></td>
+                <td><Qualities qual={item.qualities} /></td>
                 <td>{item.profession.name}</td>
                 <td>{item.completedMeetings}</td>
                 <td>{item.rate}</td>
