@@ -22,16 +22,6 @@ const UsersList = () => {
         setUsers(favArray)
     }
 
-    const renderData = () => {
-        return(
-            users.map((item) => {
-                return(
-                    <User key={item._id} item={item} onFilter={handleFilter} onFavourite={handleFavourite} />
-                )
-            })
-        )
-    }
-
     return(
         <>
             <PhraseStatus len={users.length} />
@@ -47,7 +37,15 @@ const UsersList = () => {
                     <th scope="col"></th>
                 </tr>
                 </thead>
-                <tbody>{renderData()}</tbody>
+                <tbody>
+                {
+                    users.map((item) => {
+                        return(
+                            <User key={item._id} item={item} onFilter={handleFilter} onFavourite={handleFavourite} />
+                        )
+                    })
+                }
+                </tbody>
             </table>
         </>
     )
