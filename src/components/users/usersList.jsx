@@ -27,7 +27,6 @@ const UsersList = () => {
 
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex);
-        console.log(pageIndex);
     };
 
     const count = users.length;
