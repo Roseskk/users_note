@@ -1,14 +1,15 @@
-import React from 'react';
+import React from "react";
 
-const PhraseStatus = ({len}) => {
-
+const PhraseStatus = ({ len }) => {
     return (
         <>
-            {
-                len <= 0
-                ? <h1 className={'text-danger'}>Никому ты не нужен</h1>
-                : <h1 className={'text-primary'}>{len} человек тусанет с тобой сегодня</h1>
-            }
+            {len <= 0 ? (
+                <h1 className={"text-danger"}>Никому ты не нужен</h1>
+            ) : (
+                <h1 className={"text-primary"}>
+                    {len} человек тусанет с тобой сегодня
+                </h1>
+            )}
         </>
     );
 };
