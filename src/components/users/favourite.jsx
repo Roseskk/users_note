@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const Favourite = ({ fav, onFavourite }) => {
     return (
@@ -15,6 +16,11 @@ const Favourite = ({ fav, onFavourite }) => {
             </button>
         </>
     );
+};
+
+Favourite.propTypes = {
+    fav: PropTypes.object.isRequired,
+    onFavourite: PropTypes.func.isRequired
 };
 
 export default Favourite;

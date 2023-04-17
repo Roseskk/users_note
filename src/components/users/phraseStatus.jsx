@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const PhraseStatus = ({ len }) => {
     return (
@@ -12,6 +13,10 @@ const PhraseStatus = ({ len }) => {
             )}
         </>
     );
+};
+
+PhraseStatus.propTypes = {
+    len: PropTypes.number.isRequired
 };
 
 export default PhraseStatus;

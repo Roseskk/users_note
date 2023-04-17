@@ -1,6 +1,7 @@
 import React from "react";
 import Qualities from "./qualities";
 import Favourite from "./favourite";
+import PropTypes from "prop-types";
 
 const User = ({ item, onFilter, onFavourite }) => {
     return (
@@ -27,6 +28,12 @@ const User = ({ item, onFilter, onFavourite }) => {
             </tr>
         </>
     );
+};
+
+User.propTypes = {
+    item: PropTypes.object.isRequired,
+    onFilter: PropTypes.func.isRequired,
+    onFavourite: PropTypes.func.isRequired
 };
 
 export default User;
