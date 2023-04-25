@@ -7,14 +7,14 @@ import { paginate } from "../../utils/paginate";
 import GroupList from "./groupList";
 
 const UsersList = () => {
-    const data = api.users.fetchAll();
-    const [users, setUsers] = useState(data);
+    const [users, setUsers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
 
     useEffect(() => {
         api.proffessions.fetchAll().then(data => setProfessions(data));
+        api.users.fetchAll().then(items => setUsers(items));
     }, []);
 
     const handleFilter = (id) => {
@@ -45,7 +45,17 @@ const UsersList = () => {
         setSelectedProf(undefined);
     };
 
-    const filteredUsers = selectedProf ? users.filter((user) => user.profession === selectedProf) : users;
+    const filteredUsers = selectedProf ? users.filter((user) => {
+        if (Array.isArray(professions)) {
+            return (
+                user.profession.name === selectedProf
+            );
+        } else {
+            return (
+                user.profession === selectedProf
+            );
+        }
+    }) : users;
 
     const count = filteredUsers.length;
     const pageSize = 2;
