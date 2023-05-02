@@ -19,8 +19,8 @@ const Favourite = ({ fav, onFavourite }) => {
 };
 
 Favourite.propTypes = {
-    fav: PropTypes.object.isRequired,
-    onFavourite: PropTypes.func.isRequired
+    fav: PropTypes.object,
+    onFavourite: PropTypes.func
 };
 
 export default Favourite;
