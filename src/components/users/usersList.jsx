@@ -12,7 +12,7 @@ const UsersList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
-    const [sortBy, setSortBy] = useState({ iter: "name", order: "asc" });
+    const [sortBy, setSortBy] = useState({ path: "name", order: "asc", icon: "bi-caret-down-fill" });
 
     useEffect(() => {
         api.proffessions.fetchAll().then(data => setProfessions(data));
@@ -66,7 +66,7 @@ const UsersList = () => {
     const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
 
     const count = filteredUsers.length;
-    const pageSize = 2;
+    const pageSize = 8;
     const usersCrop = paginate(sortedUsers, currentPage, pageSize);
 
     return (
