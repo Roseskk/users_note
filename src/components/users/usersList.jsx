@@ -70,32 +70,40 @@ const UsersList = () => {
     const usersCrop = paginate(sortedUsers, currentPage, pageSize);
 
     return (
-        <div className={"d-flex"}>
-            {professions &&
-                <div className={"d-flex flex-column flex-shrink-0 p-3"}>
-                    <GroupList selectedItem={selectedProf} items={professions} onItemsSelect={handleProfessionSelect} />
-                    <button className={"btn btn-secondary"} onClick={clearFilter}>Сброс</button>
-                </div>
+        <>
+            {
+                count ? (
+                    <div className={"d-flex"}>
+                        {professions &&
+                            <div className={"d-flex flex-column flex-shrink-0 p-3"}>
+                                <GroupList selectedItem={selectedProf} items={professions} onItemsSelect={handleProfessionSelect} />
+                                <button className={"btn btn-secondary"} onClick={clearFilter}>Сброс</button>
+                            </div>
+                        }
+                        <div className={"d-flex flex-column"}>
+                            <PhraseStatus len={count} />
+                            <UsersTable
+                                users={usersCrop}
+                                onFilter={handleFilter}
+                                onFavourite={handleFavourite}
+                                onSort={handleSort}
+                                selectedSort={sortBy}
+                            />
+                            <div className={"d-flex justify-content-center"}>
+                                <Pagination
+                                    itemsCount={count}
+                                    pageSize={pageSize}
+                                    currentPage={currentPage}
+                                    onPageChange={handlePageChange}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    <span>Loading</span>
+                )
             }
-            <div className={"d-flex flex-column"}>
-                <PhraseStatus len={count} />
-                <UsersTable
-                    users={usersCrop}
-                    onFilter={handleFilter}
-                    onFavourite={handleFavourite}
-                    onSort={handleSort}
-                    selectedSort={sortBy}
-                />
-                <div className={"d-flex justify-content-center"}>
-                    <Pagination
-                        itemsCount={count}
-                        pageSize={pageSize}
-                        currentPage={currentPage}
-                        onPageChange={handlePageChange}
-                    />
-                </div>
-            </div>
-        </div>
+        </>
     );
 };
 
