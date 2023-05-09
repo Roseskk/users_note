@@ -1,14 +1,13 @@
 import React from "react";
-// import TableHeader from "./tableHeader";
 import PropTypes from "prop-types";
-// import TableBody from "./tableBody";
 import Favourite from "./favourite";
 import Qualities from "./qualities";
 import Table from "./table";
+import { Link } from "react-router-dom";
 
 function UsersTable({ users, onFavourite, onFilter, onSort, selectedSort }) {
     const col = {
-        name: { path: "name", name: "Имя" },
+        name: { path: "name", name: "Имя", component: (user) => (<Link to={`users/${user._id}`}>{user.name}</Link>) },
         qualities: { name: "Качества", component: (user) => (<Qualities qual={user.qualities} />) },
         professions: { path: "profession.name", name: "Профессия" },
         completedMeetings: { path: "completedMeetings", name: "Встретился, раз" },
