@@ -19,10 +19,10 @@ const Login = (props) => {
     const validate = () => {
         const errors = validator(data, validatorConfig)
         if (errors?.email === undefined  && errors?.password === undefined) {
+
             setError(errors);
             return  true
         } else {
-            console.log(errors)
             setError(errors);
             return Object.keys(errors).length === 0
         }
@@ -35,6 +35,7 @@ const Login = (props) => {
             [e.target.name]: e.target.value
         }));
     };
+
 
     const validatorConfig = {
         email: {
@@ -70,24 +71,31 @@ const Login = (props) => {
 
 
     return (
-        <form onSubmit={handleSubmit}>
-            <TextField
-                label={"Email"}
-                name={"email"}
-                value={data.email}
-                onChange={handleChange}
-                error={err.email}
-            />
-            <TextField
-                type={"password"}
-                label={"Password"}
-                name={"password"}
-                value={data.password}
-                onChange={handleChange}
-                error={err.password}
-            />
-            <button>Кнопка</button>
-        </form>
+        <div className={"container mt-5"}>
+            <div className={"row"}>
+                <div className={"col-md-6 offset-md-3 shadow p-4"}>
+                    <h3 className={"mb-4"}>Login</h3>
+                    <form onSubmit={handleSubmit}>
+                        <TextField
+                            label={"Email"}
+                            name={"email"}
+                            value={data.email}
+                            onChange={handleChange}
+                            error={err.email}
+                        />
+                        <TextField
+                            type={"password"}
+                            label={"Password"}
+                            name={"password"}
+                            value={data.password}
+                            onChange={handleChange}
+                            error={err.password}
+                        />
+                        <button className={"btn btn-primary w-100 mx-auto"} disabled={!(err?.email === undefined  && err?.password === undefined)}>Кнопка</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     );
 };
 export default Login;
