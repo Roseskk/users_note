@@ -13,7 +13,7 @@ const TextField = ({ label, type, value, name, onChange, error }) => {
                 onChange={onChange}
             />
             {
-                error && <p>Hello world</p>
+                error && <p>{error}</p>
             }
         </div>
     );
