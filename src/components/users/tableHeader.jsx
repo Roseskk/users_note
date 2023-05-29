@@ -10,30 +10,47 @@ function TableHeader({ onSort, selectedSort, col }) {
             onSort({
                 ...selectedSort,
                 order: selectedSort.order === "asc" ? "desc" : "asc",
-                icon: selectedSort.order === "asc" ? "bi-caret-up-fill" : "bi-caret-down-fill"
+                icon:
+                    selectedSort.order === "asc"
+                        ? "bi-caret-up-fill"
+                        : "bi-caret-down-fill"
             });
         } else {
-            onSort({ path: item, order: "asc", icon: selectedSort.order === "asc" ? "bi-caret-up-fill" : "bi-caret-down-fill" });
+            onSort({
+                path: item,
+                order: "asc",
+                icon:
+                    selectedSort.order === "asc"
+                        ? "bi-caret-up-fill"
+                        : "bi-caret-down-fill"
+            });
         }
     };
     return (
         <>
             <thead>
                 <tr>
-                    {
-                        Object.keys(col).map(column => {
-                            return (
-                                <th
-                                    key={column}
-                                    onClick={col[column].path ? () => handleSort(col[column].path) : undefined} scope="col"
-                                    {...{ role: col[column].path && "button" }}
-                                    className={`${col[column].path === selectedSort.path ? selectedSort.icon : null}`}
-                                >
-                                    {col[column].name}
-                                </th>
-                            );
-                        })
-                    }
+                    {Object.keys(col).map((column) => {
+                        return (
+                            <th
+                                key={column}
+                                onClick={
+                                    col[column].path
+                                        ? () => handleSort(col[column].path)
+                                        : undefined
+                                }
+                                scope="col"
+                                {...{ role: col[column].path && "button" }}
+                                className={`${
+                                    col[column].path === selectedSort.path
+                                        ? selectedSort.icon
+                                        : null
+                                }`}
+                            >
+                                {col[column].name}
+                            </th>
+                        );
+                    })}
                 </tr>
             </thead>
         </>

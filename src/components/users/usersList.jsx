@@ -12,11 +12,15 @@ const UsersList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
-    const [sortBy, setSortBy] = useState({ path: "name", order: "asc", icon: "bi-caret-down-fill" });
+    const [sortBy, setSortBy] = useState({
+        path: "name",
+        order: "asc",
+        icon: "bi-caret-down-fill"
+    });
 
     useEffect(() => {
-        api.proffessions.fetchAll().then(data => setProfessions(data));
-        api.users.fetchAll().then(items => setUsers(items));
+        api.proffessions.fetchAll().then((data) => setProfessions(data));
+        api.users.fetchAll().then((items) => setUsers(items));
     }, []);
 
     const handleFilter = (id) => {
@@ -51,17 +55,15 @@ const UsersList = () => {
         setSelectedProf(undefined);
     };
 
-    const filteredUsers = selectedProf ? users.filter((user) => {
-        if (Array.isArray(professions)) {
-            return (
-                user.profession.name === selectedProf
-            );
-        } else {
-            return (
-                user.profession === selectedProf
-            );
-        }
-    }) : users;
+    const filteredUsers = selectedProf
+        ? users.filter((user) => {
+              if (Array.isArray(professions)) {
+                  return user.profession.name === selectedProf;
+              } else {
+                  return user.profession === selectedProf;
+              }
+          })
+        : users;
 
     const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
 
@@ -71,38 +73,45 @@ const UsersList = () => {
 
     return (
         <>
-            {
-                count ? (
-                    <div className={"d-flex"}>
-                        {professions &&
-                            <div className={"d-flex flex-column flex-shrink-0 p-3"}>
-                                <GroupList selectedItem={selectedProf} items={professions} onItemsSelect={handleProfessionSelect} />
-                                <button className={"btn btn-secondary"} onClick={clearFilter}>Сброс</button>
-                            </div>
-                        }
-                        <div className={"d-flex flex-column"}>
-                            <PhraseStatus len={count} />
-                            <UsersTable
-                                users={usersCrop}
-                                onFilter={handleFilter}
-                                onFavourite={handleFavourite}
-                                onSort={handleSort}
-                                selectedSort={sortBy}
+            {count ? (
+                <div className={"d-flex"}>
+                    {professions && (
+                        <div className={"d-flex flex-column flex-shrink-0 p-3"}>
+                            <GroupList
+                                selectedItem={selectedProf}
+                                items={professions}
+                                onItemsSelect={handleProfessionSelect}
                             />
-                            <div className={"d-flex justify-content-center"}>
-                                <Pagination
-                                    itemsCount={count}
-                                    pageSize={pageSize}
-                                    currentPage={currentPage}
-                                    onPageChange={handlePageChange}
-                                />
-                            </div>
+                            <button
+                                className={"btn btn-secondary"}
+                                onClick={clearFilter}
+                            >
+                                Сброс
+                            </button>
+                        </div>
+                    )}
+                    <div className={"d-flex flex-column"}>
+                        <PhraseStatus len={count} />
+                        <UsersTable
+                            users={usersCrop}
+                            onFilter={handleFilter}
+                            onFavourite={handleFavourite}
+                            onSort={handleSort}
+                            selectedSort={sortBy}
+                        />
+                        <div className={"d-flex justify-content-center"}>
+                            <Pagination
+                                itemsCount={count}
+                                pageSize={pageSize}
+                                currentPage={currentPage}
+                                onPageChange={handlePageChange}
+                            />
                         </div>
                     </div>
-                ) : (
-                    <span>Loading</span>
-                )
-            }
+                </div>
+            ) : (
+                <span>Loading</span>
+            )}
         </>
     );
 };

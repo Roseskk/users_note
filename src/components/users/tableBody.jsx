@@ -16,23 +16,19 @@ function TableBody({ data, col }) {
 
     return (
         <tbody>
-            {
-                data.map(item => {
-                    return (
-                        <tr key={item._id}>
-                            {
-                                Object.keys(col).map(column => {
-                                    return (
-                                        <td key={column}>
-                                            {renderContent(item, column)}
-                                        </td>
-                                    );
-                                })
-                            }
-                        </tr>
-                    );
-                })
-            }
+            {data.map((item) => {
+                return (
+                    <tr key={item._id}>
+                        {Object.keys(col).map((column) => {
+                            return (
+                                <td key={column}>
+                                    {renderContent(item, column)}
+                                </td>
+                            );
+                        })}
+                    </tr>
+                );
+            })}
         </tbody>
     );
 }
