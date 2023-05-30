@@ -7,6 +7,7 @@ import GroupList from "./groupList";
 import SearchStatus from "./searchStatus";
 import UserTable from "./usersTable";
 import _ from "lodash";
+
 const UsersList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState();
@@ -15,6 +16,8 @@ const UsersList = () => {
     const pageSize = 8;
 
     const [users, setUsers] = useState();
+    const [searchString, setSearchString] = useState("");
+
     useEffect(() => {
         api.users.fetchAll().then((data) => setUsers(data));
     }, []);
@@ -37,7 +40,12 @@ const UsersList = () => {
 
     useEffect(() => {
         setCurrentPage(1);
-    }, [selectedProf]);
+        if (searchString) {
+            setSelectedProf(undefined);
+        } else {
+            setSearchString("");
+        }
+    }, [selectedProf, searchString]);
 
     const handleProfessionSelect = (item) => {
         setSelectedProf(item);
@@ -52,12 +60,8 @@ const UsersList = () => {
 
     if (users) {
         const filteredUsers = selectedProf
-            ? users.filter(
-                  (user) =>
-                      JSON.stringify(user.profession) ===
-                      JSON.stringify(selectedProf)
-              )
-            : users;
+            ? selectedProffesion(users)
+            : searchString !== "" ? searching(users, searchString) : users;
 
         const count = filteredUsers.length;
         const sortedUsers = _.orderBy(
@@ -65,6 +69,22 @@ const UsersList = () => {
             [sortBy.path],
             [sortBy.order]
         );
+        const handleSearch = (e) => {
+            setSearchString(e.target.value);
+        };
+
+        function selectedProffesion(users) {
+            return users.filter(
+                (user) =>
+                    JSON.stringify(user.profession) ===
+                    JSON.stringify(selectedProf)
+            );
+        }
+        function searching(arr, searchParam) {
+            const regexp = new RegExp(`${searchParam}`, "g");
+            return arr.filter(user => user.name.match(regexp));
+        }
+
         const usersCrop = paginate(sortedUsers, currentPage, pageSize);
         const clearFilter = () => {
             setSelectedProf();
@@ -90,6 +110,7 @@ const UsersList = () => {
                 )}
                 <div className="d-flex flex-column">
                     <SearchStatus length={count} />
+                    <input type={"text"} placeholder={"Search..."} className={"w-full"} onChange={handleSearch} value={searchString} />
                     {count > 0 && (
                         <UserTable
                             users={usersCrop}
