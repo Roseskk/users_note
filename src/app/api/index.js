@@ -1,7 +1,7 @@
 import users from "./fake.api/user.api";
-import proffessions from "./fake.api/proffessions";
+import professions from "./fake.api/professions.api";
 const API = {
     users,
-    proffessions
+    professions
 };
 export default API;
