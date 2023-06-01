@@ -25,31 +25,60 @@ const UserEditor = (props) => {
                 label: data[professionName].name,
                 value: data[professionName]._id
             }));
-            // setChangeData((prevState)=>({
-            //     ...prevState,
-            //     profession: Object.keys(data).filter((profName) => ({
-            //     }))
-            // }));
             setProfession(professionsList);
         });
         api.qualities.fetchAll().then((data) => {
             const qualitiesList = Object.keys(data).map((optionName) => ({
                 value: data[optionName]._id,
-                label: data[optionName].name
-                // color: data[optionName].color
+                label: data[optionName].name,
+                color: data[optionName].color
             }));
             setQualities(qualitiesList);
         });
     }, []);
     const handleChange = (e) => {
-        // console.log(e);
         setChangeData((prevState) => ({
             ...prevState,
             [e.name]: e.value
         }));
     };
+
+    const getProfessionById = (id) => {
+        for (const prof of professions) {
+            if (prof.value === id) {
+                return { _id: prof.value, name: prof.label };
+            }
+        }
+    };
+    const getQualities = (elements) => {
+        const qualitiesArray = [];
+        for (const elem of elements) {
+            for (const quality in qualities) {
+                if (elem.value === qualities[quality].value) {
+                    qualitiesArray.push({
+                        _id: qualities[quality].value,
+                        name: qualities[quality].label,
+                        color: qualities[quality].color
+                    });
+                }
+            }
+        }
+        return qualitiesArray;
+    };
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log(changeData);
+        const { profession, qualities } = changeData;
+        api.users.update(userId, {
+            ...changeData,
+            profession: getProfessionById(profession),
+            qualities: getQualities(qualities)
+        }).then(res => console.log(res));
+        console.log({
+            ...changeData,
+            profession: getProfessionById(profession),
+            qualities: getQualities(qualities)
+        });
     };
 
     // console.log(changeData);
@@ -70,7 +99,7 @@ const UserEditor = (props) => {
                         options={professions}
                         name="profession"
                         onChange={handleChange}
-                        value={"Физик"}
+                        value={changeData.profession._id}
                         // error={errors.profession}
                     />
                     <RadioField
