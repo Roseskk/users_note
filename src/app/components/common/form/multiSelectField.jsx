@@ -9,9 +9,11 @@ const MultiSelectField = ({ options, onChange, name, label, defaultValue }) => {
             : options;
 
     // eslint-disable-next-line no-prototype-builtins
-    const def = !defaultValue.hasOwnProperty("label") ? defaultValue.map((item) => {
-        return { label: item.name, value: item._id };
-    }) : defaultValue;
+    const def = !defaultValue.hasOwnProperty("label")
+        ? defaultValue.map((item) => {
+              return { label: item.name, value: item._id };
+          })
+        : defaultValue;
 
     const handleChange = (value) => {
         onChange({ name: name, value });

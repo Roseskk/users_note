@@ -2,29 +2,45 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import api from "../../../api";
 import Qualities from "../../ui/qualities";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import UserInfo from "../../ui/user/userInfo";
+import UserMeets from "../../ui/user/userMeets";
+import CommentsList from "../../ui/user/commentsList";
 // import { useHistory } from "react-router-dom";
 
 const UserPage = ({ userId }) => {
-    // const {userId}
-    // const history = useHistory();
+    const history = useHistory();
     const [user, setUser] = useState();
     useEffect(() => {
         api.users.getById(userId).then((data) => setUser(data));
     }, []);
-    // const handleClick = () => {
-    //     history.push("/users");
-    // };
     if (user) {
         return (
-            <div>
-                <h1> {user.name}</h1>
-                <h2>Профессия: {user.profession.name}</h2>
-                <Qualities qualities={user.qualities} />
-                <p>completedMeetings: {user.completedMeetings}</p>
-                <h2>Rate: {user.rate}</h2>
-                <Link to={`/users/${userId}/edit`}>Редактировать</Link>
-            </div>
+            <>
+                <div className="container">
+                    <div className="row gutters-sm">
+                        <div className="col-md-4 mb-3">
+                            <UserInfo
+                                id={userId}
+                                name={user.name}
+                                profession={user.profession.name}
+                                rate={user.rate}
+                            />
+                            <Qualities qualities={user.qualities} />
+                            <UserMeets meets={user.completedMeetings} />
+                            <button
+                                onClick={() => history.goBack()}
+                                className={"btn btn-primary"}
+                            >
+                                Вернуться на страницу юзеров
+                            </button>
+                        </div>
+                        <div className="col-md-8">
+                            <CommentsList />
+                        </div>
+                    </div>
+                </div>
+            </>
         );
     } else {
         return <h1>Loading</h1>;

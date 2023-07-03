@@ -13,13 +13,15 @@ const UserEditor = (props) => {
     const [professions, setProfession] = useState([]);
 
     useEffect(() => {
-        api.users.getById(userId).then((data) => setChangeData({
-            email: data.email,
-            profession: data.profession,
-            qualities: data.qualities,
-            name: data.name,
-            sex: data.sex
-        }));
+        api.users.getById(userId).then((data) =>
+            setChangeData({
+                email: data.email,
+                profession: data.profession,
+                qualities: data.qualities,
+                name: data.name,
+                sex: data.sex
+            })
+        );
         api.professions.fetchAll().then((data) => {
             const professionsList = Object.keys(data).map((professionName) => ({
                 label: data[professionName].name,
@@ -69,11 +71,13 @@ const UserEditor = (props) => {
         e.preventDefault();
         console.log(changeData);
         const { profession, qualities } = changeData;
-        api.users.update(userId, {
-            ...changeData,
-            profession: getProfessionById(profession),
-            qualities: getQualities(qualities)
-        }).then(res => console.log(res));
+        api.users
+            .update(userId, {
+                ...changeData,
+                profession: getProfessionById(profession),
+                qualities: getQualities(qualities)
+            })
+            .then((res) => console.log(res));
         console.log({
             ...changeData,
             profession: getProfessionById(profession),
@@ -84,8 +88,8 @@ const UserEditor = (props) => {
     // console.log(changeData);
     return (
         <form onSubmit={handleSubmit}>
-            {
-                changeData && <>
+            {changeData && (
+                <>
                     <TextField
                         label="Электронная почта"
                         name="email"
@@ -128,7 +132,7 @@ const UserEditor = (props) => {
                         Submit
                     </button>
                 </>
-            }
+            )}
         </form>
     );
 };
