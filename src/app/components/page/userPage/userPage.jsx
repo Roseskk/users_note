@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import api from "../../../api";
 import Qualities from "../../ui/qualities";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import UserInfo from "../../ui/user/userInfo";
 import UserMeets from "../../ui/user/userMeets";
 import CommentsList from "../../ui/user/commentsList";
