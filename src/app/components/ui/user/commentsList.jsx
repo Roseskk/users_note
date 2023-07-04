@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Comments from "./comments";
-import SelectField from "../../common/form/selectField";
 import api from "../../../api";
 import { useParams } from "react-router-dom";
-import TextField from "../../common/form/textField";
+import AddCommentForm from "./addCommentForm";
 
 const CommentsList = (props) => {
     const { userId } = useParams();
     const [users, setUsers] = useState(null);
-    const [formData, setFromData] = useState({
-        userSelect: "",
-        comment: ""
-    });
     const [comments, setComments] = useState([]);
     useEffect(() => {
         api.users.fetchAll().then((userData) => {
@@ -22,122 +17,65 @@ const CommentsList = (props) => {
                 }));
                 setUsers(usersData);
                 setComments(
-                    commentsData.map((comment) => {
-                        const userIndex = userData.findIndex(
-                            (usr) => usr._id === comment.userId
-                        );
-                        return { ...comment, user: userData[userIndex] };
-                    })
+                    commentsData
+                        .map((comment) => {
+                            const userIndex = usersData.findIndex(
+                                (usr) => usr.value === comment.userId
+                            );
+                            return { ...comment, user: usersData[userIndex] };
+                        })
+                        .sort((a, b) => b.created_at - a.created_at)
                 );
             });
         });
     }, []);
 
-    const handleSelect = (target) => {
-        setFromData({
-            ...formData,
-            [target.name]: target.value
-        });
-    };
-
-    const handleArea = (target) => {
-        setFromData({
-            ...formData,
-            [target.name]: target.value
-        });
-    };
-
-    const handleForm = (e) => {
-        e.preventDefault();
-        if (formData.userSelect.length === 0) return;
-        api.comments
-            .add({
-                userId: formData.userSelect,
-                pageId: userId,
-                content: formData.comment
-            })
-            .then((res) => {
-                api.users.fetchAll().then((userData) => {
-                    api.comments
-                        .fetchCommentsForUser(userId)
-                        .then((commentsData) => {
-                            const usersData = Object.keys(userData).map(
-                                (userName) => ({
-                                    label: userData[userName].name,
-                                    value: userData[userName]._id
-                                })
-                            );
-                            setUsers(usersData);
-                            setComments(
-                                commentsData.map((comment) => {
-                                    const userIndex = userData.findIndex(
-                                        (usr) => usr._id === comment.userId
-                                    );
-                                    return {
-                                        ...comment,
-                                        user: userData[userIndex]
-                                    };
-                                })
-                            );
-                        });
-                });
-            });
+    const onSubmitForm = (formData) => {
+        if (formData.userSelect.length > 0 && formData.comment.length > 0) {
+            api.comments
+                .add({
+                    userId: formData.userSelect,
+                    pageId: userId,
+                    content: formData.comment
+                })
+                .then(() => {
+                    const coms = [...comments];
+                    coms.push({
+                        _id: Math.floor(Math.random() * 100).toString(),
+                        pageId: userId,
+                        userId: formData.userSelect,
+                        user: users[
+                            users.findIndex(
+                                (usr) => usr.value === formData.userSelect
+                            )
+                        ],
+                        content: formData.comment,
+                        created_at: Date.now()
+                    });
+                    setComments(
+                        coms.sort((a, b) => b.created_at - a.created_at)
+                    );
+                })
+                .catch((err) => console.log("NE OKAY", err));
+        } else {
+            alert("Данные не введены");
+        }
     };
 
     const handleDelete = (id) => {
         api.comments.remove(id).then(() => {
-            api.users.fetchAll().then((userData) => {
-                api.comments
-                    .fetchCommentsForUser(userId)
-                    .then((commentsData) => {
-                        const usersData = Object.keys(userData).map(
-                            (userName) => ({
-                                label: userData[userName].name,
-                                value: userData[userName]._id
-                            })
-                        );
-                        setUsers(usersData);
-                        setComments(
-                            commentsData.map((comment) => {
-                                const userIndex = userData.findIndex(
-                                    (usr) => usr._id === comment.userId
-                                );
-                                return {
-                                    ...comment,
-                                    user: userData[userIndex]
-                                };
-                            })
-                        );
-                    });
-            });
+            setComments((prevState) =>
+                prevState.filter((com) => com._id !== id)
+            );
         });
     };
 
-    console.log(comments);
     return (
         <>
             <div className="card mb-2">
                 {" "}
-                <div className="card-body ">
-                    <form onSubmit={handleForm}>
-                        {users !== null ? (
-                            <SelectField
-                                label={"Выбор пользователя"}
-                                name={"userSelect"}
-                                options={users}
-                                value={formData.selectValue}
-                                onChange={handleSelect}
-                            />
-                        ) : null}
-                        <TextField
-                            label={"Комментарий"}
-                            type={"textarea"}
-                            name={"comment"}
-                            value={formData.comment}
-                            onChange={handleArea}
-                        />
-                        <button className={"btn btn-primary"}>Отправить</button>
-                    </form>
+                <div className="card-body">
+                    <AddCommentForm users={users} onSubmitForm={onSubmitForm} />
                 </div>
             </div>
             <div className="card mb-3">

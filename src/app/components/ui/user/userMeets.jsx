@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const UserMeets = ({ meets }) => {
     return (
@@ -11,6 +12,10 @@ const UserMeets = ({ meets }) => {
             </div>
         </div>
     );
+};
+
+UserMeets.propTypes = {
+    meets: PropTypes.number.isRequired
 };
 
 export default UserMeets;

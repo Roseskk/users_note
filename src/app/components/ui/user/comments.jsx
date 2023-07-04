@@ -1,5 +1,6 @@
 import React from "react";
 import displayDate from "../../../utils/date";
+import PropTypes from "prop-types";
 
 const Comments = ({ comments, onDelete }) => {
     return (
@@ -25,7 +26,7 @@ const Comments = ({ comments, onDelete }) => {
                                         <div className="mb-4">
                                             <div className="d-flex justify-content-between align-items-center">
                                                 <p className="mb-1 ">
-                                                    {comment.user.name}
+                                                    {comment.user.label}
                                                     <span className="small p-2">
                                                         {displayDate(
                                                             comment.created_at
@@ -54,6 +55,11 @@ const Comments = ({ comments, onDelete }) => {
             })}
         </>
     );
+};
+
+Comments.propTypes = {
+    comments: PropTypes.array.isRequired,
+    onDelete: PropTypes.func.isRequired
 };
 
 export default React.memo(Comments);
